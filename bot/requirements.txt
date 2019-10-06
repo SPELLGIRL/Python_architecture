@@ -1,3 +1,9 @@
+certifi
+chardet
+idna
+six
+urllib3
 requests
-sqlite3
+sqlalchemy
 pyTelegramBotAPI
+pysocks
