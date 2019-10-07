@@ -3,7 +3,7 @@
 
 import telebot
 
-from handlers.handler_main import Handler
+from handlers.handler_main import HandlerMain
 from settings import config
 
 
@@ -21,11 +21,11 @@ class TelBot:
         # Инициализация бота на основе зарегистрированного токена
         self.bot = telebot.TeleBot(self.token)
         # Инициализация оброботчика событий
-        self.handler = Handler(self.bot)
+        self.handler = HandlerMain(self.bot)
 
     def start(self):
         """Метод предназначен для старта обработчика событий"""
-        self.handler.run_handlers()
+        self.handler.handle()
 
     def run_bot(self):
         """Метод запускает основные события сервера"""

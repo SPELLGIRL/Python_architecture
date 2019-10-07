@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from .DB import Category, Products
-from .dbcore import Base
 from settings import config
+from .category import Category
+from .dbcore import Base
+from .product import Products
 
 
 class Singleton(type):
@@ -83,51 +83,66 @@ class DBManager(metaclass=Singleton):
             [product_1, product_2, product_3, product_4, product_5, product_6])
 
         self._session.commit()
+        self.close()
 
     def select_single_product(self, rownum):
         """ Возвращает одну строку товара с номером rownum """
 
-        return self._session.query(Products).filter_by(id=rownum).all()
+        result = self._session.query(Products).filter_by(id=rownum).all()
+        self.close()
+        return result
 
     def select_all_products(self):
         """ Возвращает все строки товаров """
 
-        return self._session.query(Products).all()
+        result = self._session.query(Products).all()
+        self.close()
+        return result
 
     def select_all_products_category(self, category):
         """ Возвращает все строки товара категории """
 
-        return self._session.query(Products).filter_by(
+        result = self._session.query(Products).filter_by(
             category_id=category).all()
+        self.close()
+        return result
 
     def select_all_id_category(self):
         """ Возвращает все строки товара категории """
 
-        return self._session.query(Category.id).all()
+        result = self._session.query(Category.id).all()
+        self.close()
+        return result
 
     def select_count_products_category(self, category):
         """ Возвращает количество всех строк товара категории """
 
-        return self._session.query(Products).filter_by(
+        result = self._session.query(Products).filter_by(
             category_id=category).count()
+        self.close()
+        return result
 
     def count_rows_products(self):
         """ Возвращает количество строк товара """
 
-        return self._session.query(Products).count()
+        result = self._session.query(Products).count()
+        self.close()
+        return result
 
     def update_product_value(self, rownum, name, value):
         """ Обновляет данные указанной строки товара """
 
-        self._session.query(Products).filter_by(id=rownum).update(
-            {name: value})
+        self._session.query(Products).filter_by(
+            id=rownum).update({name: value})
         self._session.commit()
+        self.close()
 
     def delete_product(self, rownum):
         """ Удаляет данные указанной строки товара """
         self._session.query(Products).filter_by(id=rownum).delete()
         self._session.commit()
+        self.close()
 
     def close(self):
-        """ Закрывает сесию """
+        """ Закрывает сессию """
         self._session.close()
