@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, \
@@ -65,7 +64,7 @@ class Keyboards:
         self.markup = InlineKeyboardMarkup(row_width=1)
         # загружаем в название инлайн кнопок данные с БД
         # в соответствие с категорией товара
-        for itm in self.BD.select_all_products_category(category):
-            self.markup.add(self.set_inline_btn(itm))
+        for item in self.BD.select_all_products_category(category):
+            self.markup.add(self.set_inline_btn(item))
 
         return self.markup
