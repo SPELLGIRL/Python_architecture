@@ -12,6 +12,10 @@ class TelBot:
     используется библиотека pyTelegramBotAPI
 
     """
+
+    __version__ = '0.1a'
+    __author__ = 'SPELLGIRL'
+
     def __init__(self):
         """Инициализация бота(Сервера)"""
         # Установка прокси для бота

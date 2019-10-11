@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -27,12 +28,14 @@ class Singleton(type):
 
 class DBManager(metaclass=Singleton):
     """ Класс менеджер для работы с БД """
+
     def __init__(self):
         """ Инициализация сесии и подключения к БД """
         self.engine = create_engine(config.DATABASE)
         session = sessionmaker(bind=self.engine)
         self._session = session()
-        Base.metadata.create_all(self.engine)
+        if not os.path.isfile(config.DATABASE):
+            Base.metadata.create_all(self.engine)
 
     def set_tabs(self):
         """ Метод заполнения полей таблицы Тест """
@@ -92,6 +95,39 @@ class DBManager(metaclass=Singleton):
         self.close()
         return result
 
+    def select_single_product_name(self, rownum):
+        """
+        Возвращает название товара в соответствии с номером rownum
+        """
+        result = self._session.query(Products.name).filter_by(id=rownum).one()
+        self.close()
+        return result.name
+
+    def select_single_product_quantity(self, rownum):
+        """
+        Возвращает количество товара в соответствии с номером rownum
+        """
+        result = self._session.query(Products.quantity).filter_by(
+            id=rownum).one()
+        self.close()
+        return result.quantity
+
+    def select_single_product_title(self, rownum):
+        """
+        Возвращает title товара в соответствии с номером rownum
+        """
+        result = self._session.query(Products.title).filter_by(id=rownum).one()
+        self.close()
+        return result.title
+
+    def select_single_product_price(self, rownum):
+        """
+        Возвращает price товара в соответствии с номером rownum
+        """
+        result = self._session.query(Products.price).filter_by(id=rownum).one()
+        self.close()
+        return result.price
+
     def select_all_products(self):
         """ Возвращает все строки товаров """
 
@@ -100,7 +136,7 @@ class DBManager(metaclass=Singleton):
         return result
 
     def select_all_products_category(self, category):
-        """ Возвращает все строки товара категории """
+        """ Возвращает все виды товаров в категории """
 
         result = self._session.query(Products).filter_by(
             category_id=category).all()
@@ -108,14 +144,14 @@ class DBManager(metaclass=Singleton):
         return result
 
     def select_all_id_category(self):
-        """ Возвращает все строки товара категории """
+        """ Возвращает id всех категорий """
 
         result = self._session.query(Category.id).all()
         self.close()
         return result
 
     def select_count_products_category(self, category):
-        """ Возвращает количество всех строк товара категории """
+        """ Возвращает количество видов товаров в категории """
 
         result = self._session.query(Products).filter_by(
             category_id=category).count()
@@ -123,7 +159,7 @@ class DBManager(metaclass=Singleton):
         return result
 
     def count_rows_products(self):
-        """ Возвращает количество строк товара """
+        """ Возвращает количество всех видов товаров """
 
         result = self._session.query(Products).count()
         self.close()
@@ -138,7 +174,7 @@ class DBManager(metaclass=Singleton):
         self.close()
 
     def delete_product(self, rownum):
-        """ Удаляет данные указанной строки товара """
+        """ Удаляет данные указанного товара """
         self._session.query(Products).filter_by(id=rownum).delete()
         self._session.commit()
         self.close()
