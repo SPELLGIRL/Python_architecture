@@ -50,10 +50,11 @@ class Keyboards:
         возвращает разметку
 
         """
-        self.markup = ReplyKeyboardMarkup(row_width=1)
+        self.markup = ReplyKeyboardMarkup(True, True, row_width=1)
         self.markup.add(self.set_btn('SEMIPRODUCT'))
         self.markup.add(self.set_btn('GROCERY'))
         self.markup.add(self.set_btn('ICE_CREAM'))
+        self.markup.row(self.set_btn('BACK'), self.set_btn('ORDER'))
         return self.markup
 
     def set_select_category(self, category):

@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import json
 import os
+
+from emoji import emojize
 
 NAME_DB = 'db.sqlite3'
 # Base folder
@@ -30,12 +31,14 @@ PROXY = get_secret('PROXY')
 
 # Keyboard buttons
 KEYBOARD = {
-    'CHOOSE_GOODS': '📚 Выбрать товар',
-    'INFO': 'ℹ TradingStore',
-    'SETTINGS': '⚙ Настройки',
-    'SEMIPRODUCT': 'Полуфабрикаты',
-    'GROCERY': 'Бакалея',
-    'ICE_CREAM': 'Мороженое',
+    'CHOOSE_GOODS': emojize(':open_file_folder: Выбрать товар'),
+    'INFO': emojize(':speech_balloon: TradingStore'),
+    'SETTINGS': emojize(':globe_with_meridians: Настройки'),
+    'SEMIPRODUCT': emojize(':pizza: Полуфабрикаты'),
+    'GROCERY': emojize(':bread: Бакалея'),
+    'ICE_CREAM': emojize(':shaved_ice: Мороженое'),
+    'BACK': emojize('<< НАЗАД'),
+    'ORDER': emojize(':heavy_check_mark: ЗАКАЗ'),
 }
 
 # Id category to products
@@ -43,4 +46,10 @@ CATEGORY = {
     'SEMIPRODUCT': 1,
     'GROCERY': 2,
     'ICE_CREAM': 3,
+}
+
+# name commands
+COMMANDS = {
+    'START': "start",
+    'HELP': "help",
 }
