@@ -5,7 +5,14 @@ import os
 
 from emoji import emojize
 
+# название БД
 NAME_DB = 'db.sqlite3'
+# версия приложения
+VERSION = '0.3'
+# автор приложения
+AUTHOR = 'SPELLGIRL'
+# название приложения
+APP_NAME = 'SpellStore'
 # Base folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # DB folder
@@ -39,14 +46,18 @@ KEYBOARD = {
     'SEMIPRODUCT': emojize(':pizza: Полуфабрикаты'),
     'GROCERY': emojize(':bread: Бакалея'),
     'ICE_CREAM': emojize(':shaved_ice: Мороженое'),
-    'BACK': emojize('<< НАЗАД'),
-    'NEXT': emojize('⏩'),
+    '<<': emojize('⏪'),
+    '>>': emojize('⏩'),
+    'BACK_STEP': emojize('◀️'),
+    'NEXT_STEP': emojize('▶️'),
     'ORDER': emojize(':heavy_check_mark: ЗАКАЗ'),
     'X': emojize('❌'),
     'DOWN': emojize('🔽'),
-    'COUNT': COUNT,
+    'AMOUNT_PRODUCT': COUNT,
+    'AMOUNT_ORDERS': COUNT,
     'UP': emojize('🔼'),
     'APPLY': '✅ Оформить заказ',
+    'COPY': '©️',
 }
 
 # Id category to products

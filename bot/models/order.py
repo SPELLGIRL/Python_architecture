@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+# импортируем специальные поля Алхимии для инициализации полей таблицы
 from sqlalchemy import Column, DateTime, Integer, ForeignKey
+# импортируем модуль для связки таблиц
 from sqlalchemy.orm import relationship, backref
 
+# импортируем модуль инициализации декларативного класса Алхимии
 from DB.dbcore import Base
+# импортируем модель продуктов для связки моделей
 from .product import Products
 
 
@@ -29,4 +33,4 @@ class Order(Base):
         """
         Метод возвращает формальное строковое представление указанного объекта
         """
-        return self.quantity
+        return "{} {}".format(self.quantity, self.data)

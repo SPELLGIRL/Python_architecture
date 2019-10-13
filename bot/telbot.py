@@ -13,8 +13,8 @@ class TelBot:
 
     """
 
-    __version__ = '0.2'
-    __author__ = 'SPELLGIRL'
+    __version__ = config.VERSION
+    __author__ = config.AUTHOR
 
     def __init__(self):
         """Инициализация бота(Сервера)"""

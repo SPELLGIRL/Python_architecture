@@ -18,7 +18,7 @@ class HandlerInlineQuery(Handler):
         Обрабатывает входящие запросы на нажатие кнопок товара inline
         """
 
-        # создаеь запись в БД по факту заказа
+        # создаем запись в БД по факту заказа
         self.BD._add_orders(1, code, 1)
 
         self.bot.answer_callback_query(

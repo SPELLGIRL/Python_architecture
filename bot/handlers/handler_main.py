@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+# импортируем класс HandlerAllText обработка нажатия на кнопки и иные сообщения
 from .handler_all_text import HandlerAllText
+# импортируем класс HandlerCommands обработка комманд
 from .handler_com import HandlerCommands
+# импортируем класс HandlerInlineQuery обработка нажатия на кнопки инлайн
 from .handler_inline_query import HandlerInlineQuery
 
 
