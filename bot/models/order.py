@@ -1,38 +1,32 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import Column, String, Integer, Float, Boolean, \
-    ForeignKey
+from sqlalchemy import Column, DateTime, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-from .category import Category
-from .dbcore import Base
+from DB.dbcore import Base
+from .product import Products
 
 
-class Products(Base):
+class Order(Base):
     """
-    Класс для создания таблицы Products, основан на декларативном стиле
-    sqlalchemy
-
+    Класс Orders, основан на декларативном стиле sqlalchemy, нужен для оформления заказов
     """
     # Инициализация полей таблицы
-    __tablename__ = 'products'
+    __tablename__ = 'orders'
     id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
-    title = Column(String)
-    price = Column(Float)
     quantity = Column(Integer)
-    is_active = Column(Boolean)
-    category_id = Column(Integer, ForeignKey('category.id'))
+    data = Column(DateTime)
+    product_id = Column(Integer, ForeignKey('products.id'))
+    user_id = Column(Integer)
     # используется cascade='delete,all' для каскадного удаления данных из
     # таблицы
-    category = relationship(Category,
-                            backref=backref('products',
+    products = relationship(Products,
+                            backref=backref('orders',
                                             uselist=True,
                                             cascade='delete,all'))
 
     def __repr__(self):
         """
         Метод возвращает формальное строковое представление указанного объекта
-
         """
-        return "{} {} {}".format(self.name, self.title, self.price)
+        return self.quantity

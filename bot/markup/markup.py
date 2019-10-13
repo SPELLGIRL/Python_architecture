@@ -19,9 +19,10 @@ class Keyboards:
         # инициализация менеджера для работы с БД
         self.BD = DBManager()
 
-    @staticmethod
-    def set_btn(name):
+    def set_btn(self, name):
         """ Создает и возвращает кнопку по входным параметрам """
+        if name == "COUNT":
+            config.KEYBOARD["COUNT"] = self.BD.count_rows_order()
         return KeyboardButton(config.KEYBOARD[name])
 
     @staticmethod
@@ -67,5 +68,25 @@ class Keyboards:
         # в соответствие с категорией товара
         for item in self.BD.select_all_products_category(category):
             self.markup.add(self.set_inline_btn(item))
+
+        return self.markup
+
+    def orders_menu(self):
+        """
+        Создает разметку кнопок в заказе товара и возвращает разметку
+        """
+        self.markup = ReplyKeyboardMarkup(True, True)
+        itm_btn_1 = self.set_btn('X')
+        itm_btn_2 = self.set_btn('DOWN')
+        itm_btn_3 = self.set_btn('COUNT')
+        itm_btn_4 = self.set_btn('UP')
+
+        itm_btn_5 = self.set_btn('BACK')
+        itm_btn_6 = self.set_btn('NEXT')
+        itm_btn_7 = self.set_btn('APPLY')
+        # рассположение кнопок в меню
+        self.markup.row(itm_btn_1, itm_btn_2, itm_btn_3, itm_btn_4)
+        self.markup.row(itm_btn_5, itm_btn_3, itm_btn_6)
+        self.markup.row(itm_btn_7)
 
         return self.markup

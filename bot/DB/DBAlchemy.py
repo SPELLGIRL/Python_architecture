@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
-
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from models.category import Category
+from models.product import Products
+from models.order import Order
 from settings import config
-from .category import Category
 from .dbcore import Base
-from .product import Products
 
 
 class Singleton(type):
@@ -178,6 +179,66 @@ class DBManager(metaclass=Singleton):
         self._session.query(Products).filter_by(id=rownum).delete()
         self._session.commit()
         self.close()
+
+    # Работа с заказом
+    def _add_orders(self, quantity, product_id, user_id, ):
+        """
+        Метод заполнения заказа
+        """
+        all_id_product = [itm[0] for itm in self.select_all_product_id()]
+
+        if product_id in all_id_product:
+            quantity_order = self.select_order_quantity(product_id)
+            quantity_order += 1
+            self.update_order_value(product_id, 'quantity', quantity_order)
+
+            quantity_product = self.select_single_product_quantity(
+                product_id)
+            quantity_product -= 1
+            self.update_product_value(product_id, 'quantity',
+                                      quantity_product)
+            return
+        else:
+            order = Order(quantity=quantity, product_id=product_id,
+                          user_id=user_id, data=datetime.now())
+
+        self._session.add(order)
+        self._session.commit()
+        self.close()
+
+    def select_all_product_id(self):
+        """
+        Возвращает все id товара в заказе
+        """
+        result = self._session.query(Order.product_id).all()
+        self.close()
+        return result
+
+    def update_order_value(self, product_id, name, value):
+        """
+        Обновляет данные указанной строки заказа
+        """
+        self._session.query(Order).filter_by(
+            product_id=product_id).update({name: value})
+        self._session.commit()
+        self.close()
+
+    def select_order_quantity(self, product_id):
+        """
+        Возвращает количество товара в соответствии с номером rownum
+        """
+        result = self._session.query(Order.quantity).filter_by(
+            product_id=product_id).one()
+        self.close()
+        return result.quantity
+
+    def count_rows_order(self):
+        """
+        Возвращает количество строк заказа
+        """
+        result = self._session.query(Order).count()
+        self.close()
+        return result
 
     def close(self):
         """ Закрывает сессию """

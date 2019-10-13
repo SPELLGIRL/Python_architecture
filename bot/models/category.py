@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, String, Integer, Boolean
 
-from .dbcore import Base
+from DB.dbcore import Base
 
 
 class Category(Base):
