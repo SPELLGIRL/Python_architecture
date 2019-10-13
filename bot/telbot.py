@@ -13,7 +13,7 @@ class TelBot:
 
     """
 
-    __version__ = '0.1a'
+    __version__ = '0.2'
     __author__ = 'SPELLGIRL'
 
     def __init__(self):

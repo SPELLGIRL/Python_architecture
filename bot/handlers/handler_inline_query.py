@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from DB.DBAlchemy import DBManager
 from settings.message import MESSAGES
 from .handler import Handler
 
@@ -13,12 +12,15 @@ class HandlerInlineQuery(Handler):
     """
     def __init__(self, bot):
         super(HandlerInlineQuery, self).__init__(bot)
-        self.BD = DBManager()
 
     def pressed_btn_product(self, call, code):
         """
         Обрабатывает входящие запросы на нажатие кнопок товара inline
         """
+
+        # создаеь запись в БД по факту заказа
+        self.BD._add_orders(1, code, 1)
+
         self.bot.answer_callback_query(
             call.id,
             MESSAGES['product_order'].format(

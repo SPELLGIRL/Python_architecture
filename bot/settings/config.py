@@ -13,6 +13,8 @@ DB_DIR = os.path.join(BASE_DIR, 'DB')
 # Path to DB
 DATABASE = os.path.join('sqlite:///' + DB_DIR, NAME_DB)
 
+COUNT = 0
+
 with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
     secrets = json.load(secrets_file)
 
@@ -38,7 +40,13 @@ KEYBOARD = {
     'GROCERY': emojize(':bread: Бакалея'),
     'ICE_CREAM': emojize(':shaved_ice: Мороженое'),
     'BACK': emojize('<< НАЗАД'),
+    'NEXT': emojize('⏩'),
     'ORDER': emojize(':heavy_check_mark: ЗАКАЗ'),
+    'X': emojize('❌'),
+    'DOWN': emojize('🔽'),
+    'COUNT': COUNT,
+    'UP': emojize('🔼'),
+    'APPLY': '✅ Оформить заказ',
 }
 
 # Id category to products
