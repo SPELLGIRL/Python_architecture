@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# импортируем специальные поля Алхимии для инициализации полей таблицы
 from sqlalchemy import Column, String, Integer, Boolean
 
+# импортируем модуль инициализации декларативного класса Алхимии
 from DB.dbcore import Base
 
 

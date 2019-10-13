@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# импортируем специальные поля Алхимии для инициализации полей таблицы
 from sqlalchemy import Column, String, Integer, Float, Boolean, \
     ForeignKey
+# импортируем модуль для связки таблиц
 from sqlalchemy.orm import relationship, backref
 
-from .category import Category
+# импортируем модуль инициализации декларативного класса Алхимии
 from DB.dbcore import Base
+# импортируем модель продуктов для связки моделей
+from .category import Category
 
 
 class Products(Base):

@@ -8,6 +8,7 @@ from models.category import Category
 from models.product import Products
 from models.order import Order
 from settings import config
+from settings import utility
 from .dbcore import Base
 
 
@@ -185,8 +186,10 @@ class DBManager(metaclass=Singleton):
         """
         Метод заполнения заказа
         """
-        all_id_product = [itm[0] for itm in self.select_all_product_id()]
 
+        # получаем список всех product_id
+        all_id_product = self.select_all_product_id()
+        # если данные есть в списке, обновляем таблицы заказа и продуктов
         if product_id in all_id_product:
             quantity_order = self.select_order_quantity(product_id)
             quantity_order += 1
@@ -198,10 +201,13 @@ class DBManager(metaclass=Singleton):
             self.update_product_value(product_id, 'quantity',
                                       quantity_product)
             return
+        # если данных нет, создаем новый объект заказа
         else:
             order = Order(quantity=quantity, product_id=product_id,
                           user_id=user_id, data=datetime.now())
-
+            quantity_product = self.select_single_product_quantity(product_id)
+            quantity_product -= 1
+            self.update_product_value(product_id, 'quantity', quantity_product)
         self._session.add(order)
         self._session.commit()
         self.close()
@@ -212,7 +218,7 @@ class DBManager(metaclass=Singleton):
         """
         result = self._session.query(Order.product_id).all()
         self.close()
-        return result
+        return utility._convert(result)
 
     def update_order_value(self, product_id, name, value):
         """
@@ -220,6 +226,25 @@ class DBManager(metaclass=Singleton):
         """
         self._session.query(Order).filter_by(
             product_id=product_id).update({name: value})
+        self._session.commit()
+        self.close()
+
+    def delete_all_order(self):
+        """
+        Удаляет данные всего заказа
+        """
+        all_id_orders = self.select_all_order_id()
+
+        for itm in all_id_orders:
+            self._session.query(Order).filter_by(id=itm).delete()
+            self._session.commit()
+        self.close()
+
+    def delete_order(self, product_id):
+        """
+        Удаляет данные указанной строки заказа
+        """
+        self._session.query(Order).filter_by(product_id=product_id).delete()
         self._session.commit()
         self.close()
 
@@ -238,6 +263,22 @@ class DBManager(metaclass=Singleton):
         """
         result = self._session.query(Order).count()
         self.close()
+        return result
+
+    def select_all_order_id(self):
+        """
+        Возвращает все id заказа
+        """
+        result = self._session.query(Order.id).all()
+        self.close()
+        return utility._convert(result)
+
+    def select_single_order_id(self, rownum):
+        """
+        Возвращает id заказа с номером rownum
+        """
+        result = self._session.query(Order.id).filter_by(id=rownum).one()
+
         return result
 
     def close(self):
